@@ -35,26 +35,25 @@ dx_theo_adapt = u_0 * np.cos(omega_adapt*ticks)
 
 # Plot
 plt.plot(ticks, ax_exp, label="Experimental acceleration")
-#plt.plot(ticks, ax_theo, label="Acceleration theorique")
-#plt.plot(ticks, ax_theo_adapt, label="Acceleration theorique adaptée")
+plt.plot(ticks, ax_theo, label="Acceleration theorique")
+plt.plot(ticks, ax_theo_adapt, label="Acceleration theorique adaptée")
 plt.legend()
 plt.grid()
 plt.xlabel("Time (s)")
 plt.ylabel("Acceleration (m/s²)")
 plt.show()
 
-
 """
-#plt.plot(ticks, dx, label="Deplacement experimentale")
-#plt.plot(ticks, dx_theo, label="Deplacement theorique")
-plt.plot(ticks, dx_theo_adapt, label="Deplacement theorique adaptée")
-plt.plot(ticks, dx_adapt, label="Deplacement theorique adaptée")
+plt.plot(ticks, dx, label="Deplacement experimentale")
+plt.plot(ticks, dx_theo, label="Deplacement theorique")
+#plt.plot(ticks, dx_theo_adapt, label="Deplacement theorique adaptée")
+#plt.plot(ticks, dx_adapt, label="Deplacement theorique adaptée")
 plt.legend()
 plt.grid()
 plt.xlabel("Temps (s)")
 plt.ylabel("Deplacement (m)")
-plt.show()
-"""
+plt.show()"""
+
 
 
 
