@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Lire le fichier CSV et prendre la première feuille
-df = pd.read_csv("Free_Vibration_3Masses.csv", sep=";")
+df = pd.read_csv("Free_vibration_3Masses.csv", sep=";")
 
 # Selection première colonne
 ticks = df.iloc[:, 0]

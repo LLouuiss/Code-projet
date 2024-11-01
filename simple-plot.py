@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy.fft import fft, fftfreq
 
 def plot_subplot(t, u, Time_range, nrows, ncols, index, label, color = 'b', max_y = None):
     plt.subplot(nrows, ncols, index)
@@ -99,6 +100,7 @@ if __name__ == '__main__':
         def transform_str(str) :
             return str.replace(',', '.')
         df = pd.read_csv('Free_vibration_3Masses.csv', sep = ';')
+        df = pd.read_csv('Free_vibration_3Masses.csv', sep = ';')
         df[df.columns[1:]] = df[df.columns[1:]].applymap(transform_str)
         
         f_acc = 1024 #Hz
@@ -108,35 +110,45 @@ if __name__ == '__main__':
 
         h = 1/f_acc
         n = df.shape[0]
-        acc = np.array(df[column[2]], dtype='float64')
+        acc = np.array(df[column[2]], dtype='float64') + 0.06846854022617188
         t = np.array(df[column[0]], dtype='float64')
-
+        
         #i_0 = 10 * f_acc
         #i_0 = np.argmax(acc[i_0:]) + i_0
-        i_0 = np.argmax(acc)
-        t = t[i_0:]
-        n -= i_0
+        #i_0 = np.argmax(acc)
+        i_last = int(t[-1] * f_acc)
+        i_0 = int(5 * f_acc)
+        t = t[i_0: i_last]
+        n = i_last - i_0
+
+        print(np.mean(acc[0:1*f_acc]))
+
 
         def f(t, U):
             i = int(t/h)
             return np.array([U[1], acc[i]], dtype='float64')
-        t, U = Adams_Bashforth_4(f, [.05, 0], h, n, t)
+        t, U = Adams_Bashforth_4(f, [0, 0], h, n, t)
         
 
         plt.figure()
         plt.plot(df[column[0]], np.array(df[column[2]], dtype='float64'), 'b', label = 'a_x [m/s²]')
-        #plt.plot(df[column[0]], np.array(df[column[3]], dtype='float64'), 'r', label = 'a_y [m/s²]')
-        #plt.plot(df[column[0]], np.array(df[column[4]], dtype='float64'), 'g', label = 'a_z [m/s²]')
+        plt.plot(df[column[0]], np.array(df[column[3]], dtype='float64'), 'r', label = 'a_y [m/s²]')
+        plt.plot(df[column[0]], np.array(df[column[4]], dtype='float64'), 'g', label = 'a_z [m/s²]')
         plt.xlabel('Time [s]')
         plt.xlim(df[column[0]][0], df[column[0]][df.shape[0]-1])
         plt.ylabel('Acceleration [m/s²]')
-        #plt.legend()
+        plt.legend()
         plt.grid(True)
         plt.savefig('figures/plot-1.3.pdf')
         plt.figure('Velocity')
         plt.plot(t, U[:,1], 'y', label = 'v_x [m/s] (RK4)')
         plt.figure('Position')
         plt.plot(t, U[:,0], 'c', label = 'x [m] (RK4)')
+        """
+        y = fft(acc[i_0:i_last])
+        x = fftfreq(n, h)
+        plt.figure('FFT')
+        plt.plot(x,y, 'b')"""
     
     
     
