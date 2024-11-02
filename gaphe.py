@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 # Lire le fichier CSV et prendre la première feuille
 df = pd.read_csv("Free_vibration_3Masses.csv", sep=";")
 
@@ -17,8 +18,9 @@ ax_exp = df.iloc[:, 1].array
 ax_exp= [x.replace(',', '.') for x in ax_exp]
 ax_exp=[float(x) for x in ax_exp]
 
+
 # Calcule deplacement experimentale
-omega = 17.464 # rad/s
+omega = 17.87 # rad/s
 omega_adapt = 2*np.pi/0.4 # rad/s
 print(omega_adapt)
 dx = [-x/(omega**2) for x in ax_exp]
@@ -35,8 +37,8 @@ dx_theo_adapt = u_0 * np.cos(omega_adapt*ticks)
 
 # Plot
 plt.plot(ticks, ax_exp, label="Experimental acceleration")
-plt.plot(ticks, ax_theo, label="Acceleration theorique")
-plt.plot(ticks, ax_theo_adapt, label="Acceleration theorique adaptée")
+#plt.plot(ticks, ax_theo, label="Acceleration theorique")
+#plt.plot(ticks, ax_theo_adapt, label="Acceleration theorique adaptée")
 plt.legend()
 plt.grid()
 plt.xlabel("Time (s)")
