@@ -100,7 +100,6 @@ if __name__ == '__main__':
         def transform_str(str) :
             return str.replace(',', '.')
         df = pd.read_csv('Free_vibration_3Masses.csv', sep = ';')
-        df = pd.read_csv('Free_vibration_3Masses.csv', sep = ';')
         df[df.columns[1:]] = df[df.columns[1:]].applymap(transform_str)
         
         f_acc = 1024 #Hz
@@ -110,18 +109,19 @@ if __name__ == '__main__':
 
         h = 1/f_acc
         n = df.shape[0]
-        acc = np.array(df[column[2]], dtype='float64') + 0.06846854022617188
+        acc = np.array(df[column[2]], dtype='float64') + 0.0636010209864509
         t = np.array(df[column[0]], dtype='float64')
         
-        #i_0 = 10 * f_acc
-        #i_0 = np.argmax(acc[i_0:]) + i_0
-        #i_0 = np.argmax(acc)
+        i_0 = 7 * f_acc
+        i_0 = np.argmax(acc[i_0:]) + i_0
+        i_0 = np.argmax(acc)
         i_last = int(t[-1] * f_acc)
-        i_0 = int(5 * f_acc)
+        #i_0 = int(5 * f_acc)
+
         t = t[i_0: i_last]
         n = i_last - i_0
 
-        print(np.mean(acc[0:1*f_acc]))
+        print(np.mean(acc[0:int(1.6*f_acc)]))
 
 
         def f(t, U):
@@ -132,8 +132,8 @@ if __name__ == '__main__':
 
         plt.figure()
         plt.plot(df[column[0]], np.array(df[column[2]], dtype='float64'), 'b', label = 'a_x [m/s²]')
-        plt.plot(df[column[0]], np.array(df[column[3]], dtype='float64'), 'r', label = 'a_y [m/s²]')
-        plt.plot(df[column[0]], np.array(df[column[4]], dtype='float64'), 'g', label = 'a_z [m/s²]')
+        #plt.plot(df[column[0]], np.array(df[column[3]], dtype='float64'), 'r', label = 'a_y [m/s²]')
+        #plt.plot(df[column[0]], np.array(df[column[4]], dtype='float64'), 'g', label = 'a_z [m/s²]')
         plt.xlabel('Time [s]')
         plt.xlim(df[column[0]][0], df[column[0]][df.shape[0]-1])
         plt.ylabel('Acceleration [m/s²]')
@@ -141,9 +141,9 @@ if __name__ == '__main__':
         plt.grid(True)
         plt.savefig('figures/plot-1.3.pdf')
         plt.figure('Velocity')
-        plt.plot(t, U[:,1], 'y', label = 'v_x [m/s] (RK4)')
+        plt.plot(t, U[:,1], 'y', label = 'v_x [m/s]')
         plt.figure('Position')
-        plt.plot(t, U[:,0], 'c', label = 'x [m] (RK4)')
+        plt.plot(t, U[:,0], 'c', label = 'x [m]')
         """
         y = fft(acc[i_0:i_last])
         x = fftfreq(n, h)
