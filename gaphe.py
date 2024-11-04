@@ -211,6 +211,11 @@ u_damped = np.exp(-xi*omega*t) * (u_0 * np.cos(omega_d*t) + (du_0 + xi*omega*u_0
 du_damped = -xi * np.exp(-xi*omega*t) * (omega*u_0 * np.cos(omega_d*t) + (du_0 + xi*omega*u_0) * np.sin(omega_d*t)/omega_d) + np.exp(-xi*omega*t) * (-u_0 * omega_d * np.sin(omega_d*t) + (du_0 + xi*omega*u_0) * omega_d * np.cos(omega_d*t)/omega_d)
 ddu_damped = -xi**2 * omega**2 * np.exp(-xi*omega*t) * (u_0 * np.cos(omega_d*t) + (du_0 + xi*omega*u_0) * np.sin(omega_d*t)/omega_d) - 2 * xi * omega * np.exp(-xi*omega*t) * (-u_0 * omega_d * np.sin(omega_d*t) + (du_0 + xi*omega*u_0) * omega_d * np.cos(omega_d*t)/omega_d) + np.exp(-xi*omega*t) * (-u_0 * omega_d**2 * np.cos(omega_d*t) - (du_0 + xi*omega*u_0) * omega_d**2 * np.sin(omega_d*t)/omega_d)
 
+# Print equations of motion
+print(f'u(t) = {u_0} * exp(-{xi}*{omega}*t) * (cos({omega_d}*t) + ({du_0} + {xi}*{omega}*{u_0}) * sin({omega_d}*t) / {omega_d})')
+print(f'du(t) = -{xi} * exp(-{xi}*{omega}*t) * ({omega}*{u_0} * cos({omega_d}*t) + ({du_0} + {xi}*{omega}*{u_0}) * sin({omega_d}*t)/{omega_d}) + exp(-{xi}*{omega}*t) * (-{u_0} * {omega_d} * sin({omega_d}*t) + ({du_0} + {xi}*{omega}*{u_0}) * {omega_d} * cos({omega_d}*t)/{omega_d})')
+print(f'ddu(t) = -{xi}**2 * {omega}**2 * exp(-{xi}*{omega}*t) * ({u_0} * cos({omega_d}*t) + ({du_0} + {xi}*{omega}*{u_0}) * sin({omega_d}*t)/{omega_d}) - 2 * {xi} * {omega} * exp(-{xi}*{omega}*t) * (-{u_0} * {omega_d} * sin({omega_d}*t) + ({du_0} + {xi}*{omega}*{u_0}) * {omega_d} * cos({omega_d}*t)/{omega_d}) + exp(-{xi}*{omega}*t) * (-{u_0} * {omega_d}**2 * cos({omega_d}*t) - ({du_0} + {xi}*{omega}*{u_0}) * {omega_d}**2 * sin({omega_d}*t)/{omega_d})')
+
 # Subplot
 plt.figure()
 plt.subplot(3, 1, 1)
