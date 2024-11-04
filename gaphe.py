@@ -35,26 +35,149 @@ dx_theo = u_0 * np.cos(omega*ticks)
 dx_theo_adapt = u_0 * np.cos(omega_adapt*ticks)
 
 
-# Plot
+
+# Subplot Acceleration theo vs exp (2 graphiques different)
+
+plt.subplot(2, 1, 1)
 plt.plot(ticks, ax_exp, label="Experimental acceleration")
-#plt.plot(ticks, ax_theo, label="Acceleration theorique")
-#plt.plot(ticks, ax_theo_adapt, label="Acceleration theorique adaptée")
+plt.ylabel("Acceleration (m/s²)")
+plt.legend()
+plt.grid()
+plt.subplot(2, 1, 2)
+plt.plot(ticks, ax_theo, label="Theoretical acceleration")
+plt.ylabel("Acceleration (m/s²)")
+plt.legend()
+plt.grid()
+plt.xlabel("Time (s)")
+plt.savefig("figures/VS_ACC.pdf")
+plt.show()
+
+# Subplot Deplacement theo vs exp (2 graphiques different)
+plt.subplot(2, 1, 1)
+plt.plot(ticks, dx, label="Experimental displacement")
+plt.ylabel("Displacement (m)")
+plt.legend()
+plt.grid()
+plt.subplot(2, 1, 2)
+plt.plot(ticks, dx_theo, label="Theoretical displacement")
+plt.ylabel("Displacement (m)")
+plt.legend()
+plt.grid()
+plt.xlabel("Time (s)")
+plt.savefig("figures/VS_DEPL.pdf")
+plt.show()
+
+# Subplot Acceleration exp vs the adaptée (2 graphiques different)
+plt.subplot(3, 1, 1)
+plt.plot(ticks, ax_theo_adapt, label="Adapted theoretical acceleration")
+plt.ylabel("Acceleration (m/s²)")
+plt.legend()
+plt.grid()
+plt.subplot(3, 1, 2)
+plt.plot(ticks, dx_adapt, label="Adapted experimental displacement")
+plt.ylabel("Displacement (m)")
+plt.legend()
+plt.grid()
+plt.subplot(3, 1, 3)
+plt.plot(ticks, dx_theo_adapt, label="Adapted theoretical displacement")
+plt.ylabel("Displacement (m)")
+plt.legend()
+plt.grid()
+plt.xlabel("Time (s)")
+plt.savefig("figures/VS_ACC_DEPL_ADAPT.pdf")
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+# Acceleration
+plt.plot(ticks, ax_exp, label="Experimental acceleration")
 plt.legend()
 plt.grid()
 plt.xlabel("Time (s)")
 plt.ylabel("Acceleration (m/s²)")
+plt.savefig("figures/plot_acc_exp.pdf")
 plt.show()
 
-"""
-plt.plot(ticks, dx, label="Deplacement experimentale")
-plt.plot(ticks, dx_theo, label="Deplacement theorique")
-#plt.plot(ticks, dx_theo_adapt, label="Deplacement theorique adaptée")
-#plt.plot(ticks, dx_adapt, label="Deplacement theorique adaptée")
+plt.plot(ticks, ax_theo, label="Theoretical acceleration")
 plt.legend()
 plt.grid()
-plt.xlabel("Temps (s)")
-plt.ylabel("Deplacement (m)")
-plt.show()"""
+plt.xlabel("Time (s)")
+plt.ylabel("Acceleration (m/s²)")
+plt.savefig("figures/plot_acc_the.pdf")
+plt.show()
+
+plt.plot(ticks, ax_theo_adapt, label="Adapted theoretical acceleration")
+plt.legend()
+plt.grid()
+plt.xlabel("Time (s)")
+plt.ylabel("Acceleration (m/s²)")
+plt.savefig("figures/plot_acc_the_adapt.pdf")
+plt.show()
+
+# Deplacement
+plt.plot(ticks, dx, label="Experimental displacement")
+plt.legend()
+plt.grid()
+plt.xlabel("Time (s)")
+plt.ylabel("Displacement (m)")
+plt.savefig("figures/plot_depl_exp.pdf")
+plt.show()
+
+plt.plot(ticks, dx_theo, label="Theoretical displacement")
+plt.legend()
+plt.grid()
+plt.xlabel("Time (s)")
+plt.ylabel("Displacement (m)")
+plt.savefig("figures/plot_depl_the.pdf")
+plt.show()
+
+plt.plot(ticks, dx_theo_adapt, label="Adapted theoretical displacement")
+plt.legend()
+plt.grid()
+plt.xlabel("Time (s)")
+plt.ylabel("Displacement (m)")
+plt.savefig("figures/plot_depl_the_adapt.pdf")
+plt.show()
+
+plt.plot(ticks, dx_adapt, label="Adapted experimental displacement")
+plt.legend()
+plt.grid()
+plt.xlabel("Time (s)")
+plt.ylabel("Displacement (m)")
+plt.savefig("figures/plot_depl_exp_adapt.pdf")
+plt.show()
+
+# Plot acceleration et deplacement
+plt.plot(ticks, ax_exp, label="Experimental acceleration")
+plt.plot(ticks, ax_theo, label="Theoretical acceleration")
+plt.plot(ticks, ax_theo_adapt, label="Adapted theoretical acceleration")
+plt.legend()
+plt.grid()
+plt.xlabel("Time (s)")
+plt.ylabel("Acceleration (m/s²)")
+plt.savefig("figures/plot_acc.pdf")
+plt.show()
+
+plt.plot(ticks, dx, label="Experimental displacement")
+plt.plot(ticks, dx_theo, label="Theoretical displacement")
+plt.plot(ticks, dx_theo_adapt, label="Adapted theoretical displacement")
+plt.plot(ticks, dx_adapt, label="Adapted experimental displacement")
+plt.legend()
+plt.grid()
+plt.xlabel("Time (s)")
+plt.ylabel("Displacement (m)")
+plt.savefig("figures/plot_depl.pdf")
+plt.show()
+
+
 
 
 

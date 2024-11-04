@@ -53,15 +53,15 @@ def Adams_Bashforth_4(f, U_0, h, n, t) :
 
 if __name__ == '__main__':
 
-    p1_2 = False
-    p1_3 = True
+    p1_2 = True
+    p1_3 = False
 
 
     #Data
     E = 210e9 #Pa
     I = 7.158e-12 #m^4
-    L = .275 #m
-    m = .711 #kg
+    L = .259 #m
+    m = .812 #kg
 
     #Stiffness
     K = 3*E*I/(L**3)
@@ -69,6 +69,7 @@ if __name__ == '__main__':
     omega = (K/m)**.5
     #Natural Period
     T = 2*np.pi/omega
+    print(f'K = {K:.2f} N/m \nomega = {omega:.2f} rad/s \nT = {T:.2f} s')
 
     #Time
     Time_range = (0, 10)
