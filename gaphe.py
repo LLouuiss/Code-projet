@@ -234,6 +234,14 @@ plt.xlabel("Time [s]")
 plt.savefig("figures/plot_damped.pdf")
 plt.show()
 
+# Acceleration
+plt.plot(ticks, ax_exp, label="Experimental acceleration")
+plt.legend()
+plt.grid()
+plt.xlabel("Time (s)")
+plt.ylabel("Acceleration (m/s²)")
+plt.savefig("figures/plot_acc_exp.pdf")
+plt.show()
 
 
 
