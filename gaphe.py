@@ -35,7 +35,7 @@ dx_theo = u_0 * np.cos(omega*ticks)
 dx_theo_adapt = u_0 * np.cos(omega_adapt*ticks)
 
 
-
+"""
 # Subplot Acceleration theo vs exp (2 graphiques different)
 
 plt.subplot(2, 1, 1)
@@ -176,11 +176,58 @@ plt.xlabel("Time (s)")
 plt.ylabel("Displacement (m)")
 plt.savefig("figures/plot_depl.pdf")
 plt.show()
+"""
 
 
 
 
 
+# Plot acceleration, vitesse et deplacement pour Equation of motion of the damped system with its initial conditions
+#Data
+E = 210e9 #Pa
+I = 7.158e-12 #m^4
+L = .259 #m
+m = .812 #kg
+u_0 = .05 # m
+du_0 = 0
+#Stiffness
+K = 3*E*I/(L**3)
+#Natural Cyclic Frequency
+omega = (K/m)**.5
+omega = omega_adapt
+#Natural Period
+T = 2*np.pi/omega
+Time_range = (0, 10)
+nb = 100
+t = np.arange(Time_range[0], Time_range[1] + T/nb, T/nb)
+# Damping ratio
+xi = 1.39 * 10**-3
+# Damped natural frequency
+omega_d = omega * (1 - xi**2)**.5
+print(f'K = {K:.2f} N/m \nomega = {omega:.2f} rad/s \nT = {T:.2f} s \nxi = {xi:.2f} \nomega_d = {omega_d:.2f} rad/s')
+
+
+u_damped = np.exp(-xi*omega*t) * (u_0 * np.cos(omega_d*t) + (du_0 + xi*omega*u_0) * np.sin(omega_d*t) / omega_d)
+du_damped = -xi * np.exp(-xi*omega*t) * (omega*u_0 * np.cos(omega_d*t) + (du_0 + xi*omega*u_0) * np.sin(omega_d*t)/omega_d) + np.exp(-xi*omega*t) * (-u_0 * omega_d * np.sin(omega_d*t) + (du_0 + xi*omega*u_0) * omega_d * np.cos(omega_d*t)/omega_d)
+ddu_damped = -xi**2 * omega**2 * np.exp(-xi*omega*t) * (u_0 * np.cos(omega_d*t) + (du_0 + xi*omega*u_0) * np.sin(omega_d*t)/omega_d) - 2 * xi * omega * np.exp(-xi*omega*t) * (-u_0 * omega_d * np.sin(omega_d*t) + (du_0 + xi*omega*u_0) * omega_d * np.cos(omega_d*t)/omega_d) + np.exp(-xi*omega*t) * (-u_0 * omega_d**2 * np.cos(omega_d*t) - (du_0 + xi*omega*u_0) * omega_d**2 * np.sin(omega_d*t)/omega_d)
+
+# Subplot
+plt.figure()
+plt.subplot(3, 1, 1)
+plt.plot(t, u_damped, label="Displacement [m]", color="blue")
+plt.ylabel("Displacement [m]")
+plt.grid()
+plt.subplot(3, 1, 2)
+plt.plot(t, du_damped, label="Velocity [m/s]", color="red")
+plt.ylabel("Velocity [m/s]")
+plt.grid()
+plt.subplot(3, 1, 3)
+plt.plot(t, ddu_damped, label="Acceleration [m/s²]", color="green")
+plt.ylabel("Acceleration [m/s²]")
+plt.grid()
+plt.xlabel("Time [s]")
+plt.savefig("figures/plot_damped.pdf")
+plt.show()
 
 
 
