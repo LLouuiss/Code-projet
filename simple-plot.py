@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from scipy.fft import fft, fftfreq
 
 def plot_subplot(t, u, Time_range, nrows, ncols, index, label, color = 'b', max_y = None):
     plt.subplot(nrows, ncols, index)
@@ -145,15 +144,7 @@ if __name__ == '__main__':
         plt.plot(t, U[:,1], 'y', label = 'v_x [m/s]')
         plt.figure('Position')
         plt.plot(t, U[:,0], 'c', label = 'x [m]')
-        """
-        y = fft(acc[i_0:i_last])
-        x = fftfreq(n, h)
-        plt.figure('FFT')
-        plt.plot(x,y, 'b')"""
-    
-    
-    
-    
-    
+        
+
     plt.show()
 
