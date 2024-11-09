@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
     i_0 = 0 * f_acc
     #i_0 = np.argmax(acc[i_0:]) + i_0
-    i_last = int(20 * f_acc) #29.952231
+    i_last = int(60 * f_acc) #29.952231
 
     t = t[i_0: i_last]
     n = i_last - i_0

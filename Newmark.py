@@ -48,22 +48,27 @@ if __name__ == '__main__':
     #Amplitude
     A = 0.1 * g
     #Time
-    t_g = 60 #s
+    t_g = 40 #s
     u_0 = [0,0]
-    C = .01*2*m*omega
+    C = 1.39e-3*2*m*omega
+    fontsize = 40
+    plt.rc('font', size = fontsize)
 
-    plt.figure()
+    plt.figure(figsize=(30,21))
 
-    for dt in [T/100]:#T/20, T/10, T/5, T/3]:
+    for point in [20, 400]:
+        dt = T/point
         t = np.arange(0, t_g, dt)
         p = -m * ground_Acceleration(t, A, T)
         U = Newmark_Method(t, u_0, p, m, K, C)
-        plt.plot(t, U[0], label=f'dt = {dt:.2f}s')
+        plt.plot(t, U[0], label=f'dt = T/{point:d}')
         #plt.plot(t, U[1], label=f'dt = {dt:.2f}')
         #plt.plot(t, U[2], label=f'dt = {dt:.2f}')
         #plt.plot(t, p, label='p')
-    
+    plt.xlabel("time [s]")
+    plt.ylabel("Displacement [m]")
     plt.xlim(0, t_g)
     plt.legend()
     plt.grid()
+    plt.savefig('figures/Partie_3-1.pdf')
     plt.show()
