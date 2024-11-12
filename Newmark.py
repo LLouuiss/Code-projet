@@ -1,15 +1,37 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+#Data for the Newmark Method
 beta = 1/6
 gamma = 1/2
 
+"""
+Ground Acceleration used for the part 3
+Input:
+    t: np.array time
+    A: float amplitude of the acceleration
+    T: float period of the acceleration
+Output:
+    A_g: np.array ground acceleration
+"""
 def ground_Acceleration(t, A, T):
     A_g = A * np.ones(t.shape)
     A_g[(t/T)%2 >= 1] = -A
     A_g[t>40] = 0
     return A_g
 
+"""
+Apply the Newmark Method to solve the equation of motion
+Input:
+    t: np.array time
+    u_0: np.array initial conditions
+    p: np.array applied force
+    m: float mass of the system
+    k: float stiffness of the system
+    c: float damping of the system
+Output:
+    U: np.array displacement, velocity and acceleration of the system
+"""
 def Newmark_Method(t, u_0, p, m, k, c):
     U = np.zeros((3, t.shape[0]))
     U[0][0] = u_0[0]
@@ -31,10 +53,15 @@ def Newmark_Method(t, u_0, p, m, k, c):
 if __name__ == '__main__':
     
     #Data
+    #Young Modulus
     E = 210e9 #Pa
+    #Inertia
     I = 7.158e-12 #m^4
+    #Length
     L = .259 #m
+    #Mass
     m = .812 #kg
+    #Gravity
     g = 9.81 #m/s^2
 
     #Stiffness
@@ -49,14 +76,19 @@ if __name__ == '__main__':
     A = 0.1 * g
     #Time
     t_g = 40 #s
+    #Initial conditions
     u_0 = [0,0]
+    #Damping
     C = 1.39e-3*2*m*omega
+    #Initialize font size for the plots
     fontsize = 40
     plt.rc('font', size = fontsize)
 
+    #Initialize the figure
     plt.figure(figsize=(30,21))
 
-    for point in [20, 400]:
+    #Plot the displacement for different time steps with time step = T/point
+    for point in [100]:
         dt = T/point
         t = np.arange(0, t_g, dt)
         p = -m * ground_Acceleration(t, A, T)

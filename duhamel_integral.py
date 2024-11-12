@@ -15,7 +15,7 @@ wd = wn*math.sqrt(1-xi**2)
 
                
 tMax = 40
-delT = Tn/1000
+delT = Tn/500
 time = np.arange(0, tMax + delT, delT)
 
 
@@ -44,6 +44,14 @@ def Du(T):
         BC[i] = BC[i-1] + 0.5*delT*(y_B[i] + y_B[i-1])/wd/m
     return AC*np.exp(-xi*wn*T)*np.sin(wd*T) - BC*np.exp(-xi*wn*T)*np.cos(wd*T)
 
+def Du1(T):
+    h = np.exp(-xi*wn*T)/m/wd*np.sin(wd*T)
+    F = m * ground_Acceleration(T, A, Tn)
+    U = np.zeros(len(T))
+    for i in range(0, len(T)):
+        U[i:] = U[i:] + h[:len(T)-i]*F[i]*delT
+    return U,h,F
+
 def Duhamel(T):
     U = np.zeros(len(T)) # a zero for every timestep to hold the displacements values
     
@@ -71,7 +79,7 @@ def Duhamel(T):
             U[i] = A_i*math.e**(-xi*wn*T[i])*math.sin(wd*T[i]) - B_i*math.e**(-xi*wn*T[i])*math.cos(wd*T[i])
     return U   
 
-response = Du(time)
+response,h,F = Du1(time)
 # Plotting the displacement response
 plt.plot(time, response)
 #plt.plot(time, p)
