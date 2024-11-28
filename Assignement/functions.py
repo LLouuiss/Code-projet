@@ -41,18 +41,9 @@ def Newmark_Method_S(t, u_0, p, m, k, c):
     return U
 
 """
-Apply the Newmark Method to solve the equation of motion for multiple degree of freedom
-Input:
-    t: np.array time
-    u_0: np.array initial conditions of dimension Nx2
-    p: np.array applied force
-    K: np.array stiffness matrix of dimension NxN
-    M: np.array mass matrix of dimension NxN
-    C: np.array damping matrix of dimension NxN
-Output:
-    U: np.array displacement, velocity and acceleration of the system
+This function is deprecated
 """
-def Newmark_Method_M(t, u_0, P, K, M, C):
+def Newmark_Method_M_old(t, u_0, P, K, M, C):
     N = len(K)
     n = len(t)
     U = np.zeros((N, 3, n))
@@ -71,6 +62,36 @@ def Newmark_Method_M(t, u_0, P, K, M, C):
         Q[i] = Newmark_Method_S(t, q_0[i], P_g[i], 1, w[i]**2, C_g[i][i])
     for j in range(3):
         U[:,j] = phi @ Q[:,j]
+    return U
+
+"""
+Apply the Newmark Method to solve the equation of motion for multiple degree of freedom
+Input:
+    t: np.array time
+    u_0: np.array initial conditions of dimension Nx2
+    p: np.array applied force
+    K: np.array stiffness matrix of dimension NxN
+    M: np.array mass matrix of dimension NxN
+    C: np.array damping matrix of dimension NxN
+Output:
+    U: np.array displacement, velocity and acceleration of the system
+"""
+def Newmark_Method_M(t, u_0, P, K, M, C):
+    N = len(K)
+    n = len(t)
+    U = np.zeros((N, 3, n))
+    U[:,0,0] = u_0[:,0]
+    U[:,1,0] = u_0[:,1]
+    dt = t[1] - t[0]
+    K_b = M/beta/dt**2 + C*gamma/beta/dt + K
+    U[:,2,0] = np.linalg.inv(M) @ (P[:,0] - C @ U[:,1,0] - K @ U[:,0,0])
+    for i in range(0, t.shape[0]-1):
+        dU_p = U[:,1,i] + dt*(1 - gamma)*U[:,2,i]
+        U_p = U[:,0,i] + dt*U[:,1,i] + dt**2*(1/2 - beta)*U[:,2,i]
+        P_b = P[:,i + 1] + M @ U_p/beta/dt**2 + C @ (gamma * U_p/beta/dt - dU_p)
+        U[:,0,i + 1] = solve(K_b, P_b)
+        U[:,2,i + 1] = (U[:,0,i + 1] - U_p) / (beta*dt**2)
+        U[:,1,i + 1] = dU_p + gamma*U[:,2,i + 1]*dt
     return U
 
 def normalize_mass(phi, M):

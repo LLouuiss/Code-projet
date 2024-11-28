@@ -47,15 +47,12 @@ if False:
 #Damping
 c = 200 * 1e-4 * np.ones(6)
 C = damping_matrix(c)
-Phi__ = np.column_stack((np.hstack(K), np.hstack(M)))
-alpha = solve(Phi__.T @ Phi__,Phi__.T @ np.hstack(C))
-C = alpha[0]*K + alpha[1]*M
 
-if False:
+if True:
     U = Newmark_Method_M(t, u_0, P, K, M, C)
     plot_M(t, U[:,0], "Damped-free-vibration-Case-1", "Time [s]", "Angle [rad]")
 
-if False:
+if True:
     fig = plt.figure()
     generate_vid(fig, update, init, t, U[:,0], "Damped-free-vibration-Case-1.mp4")
 
