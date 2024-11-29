@@ -164,6 +164,27 @@ def plot_M(t, U, title, xlabel, ylabel ):
     plt.xlim((0,20))
     plot_end(f"Assignement/figure/{title}.pdf")
 
+def plot_mode(w, phi,l, title):
+    n = len(w)
+    plt.figure(title, figsize=(10,10))
+    for i in range(n):
+        plt.subplot(2,n//2,i+1)
+        ax = plt.gca()
+        ax.xaxis.tick_top()
+        ax.xaxis.set_label_position('top')
+        plt.grid()
+        plt.ylim((-.75,0))
+        plt.xlim((-.3,.3))
+        plt.title(f"Mode {i+1} - w = {w[i]:.2f} rad/s")
+        x = np.zeros(n+1)
+        y = np.zeros(n+1)
+        for j in range(1, n+1):
+            x[j] = x[j-1] + l[j-1]*np.sin(phi[j-1,i])
+            y[j] = y[j-1] - l[j-1]*np.cos(phi[j-1,i])
+        plt.plot(x,y,"-b", label=f"Mode {i+1} - w = {w[i]:.2f} rad/s")
+    plt.savefig(f"Assignement/figure/{title}.pdf")
+    plt.show()
+
 
 def generate_vid(fig, func, init, t, D, filename):
     print('start_animation')
