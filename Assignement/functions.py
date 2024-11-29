@@ -124,7 +124,7 @@ def stiffness_matrix(m, l):
     K = np.zeros((len(m),len(m)))
     for i in range(len(m)):
         for k in range(i, len(m)):
-            K[i][i] += m[k]*l[i]**2
+            K[i][i] += m[k]*9.81*l[i]
     return K
 
 def damping_matrix(c):
@@ -137,6 +137,14 @@ def damping_matrix(c):
         C[i-1][i] = -c[i]
         C[i][i-1] = -c[i]
     return C
+
+def max_lateral_displacement(U,l):
+    N = U.shape[0]
+    n = U.shape[1]
+    x = np.zeros((N+1, n))
+    for i in range(1,N+1):
+        x[i] = x[i-1] + l[i-1]*np.sin(U[i-1])
+    return np.max(np.abs(x))
 
 def plot_initialize(title, xlabel, ylabel):
     plt.figure(title)

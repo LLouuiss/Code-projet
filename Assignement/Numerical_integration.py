@@ -10,13 +10,15 @@ M = mass_matrix(m, l)
 C = np.zeros((nb,nb))
 u_0 = np.zeros((nb,2))
 
-t = np.linspace(0, 20, 24*20)
+fps = 100
+t = np.linspace(0, 20, fps*20)
 P = np.zeros((nb, t.shape[0]))
 u_0[0][0] = 30*math.pi/180
 #Resolve and plot
-if False:
+if True:
     U = Newmark_Method_M(t, u_0, P, K, M, C)
     plot_M(t, U[:,0], "Undamped-free-vibration-Case-1", "Time [s]", "Angle [rad]")
+    print(f"Case 1 - Undamped => x = {max_lateral_displacement(U[:,0],l)} m")
 
 def init():
     ax = plt.gca()
@@ -38,23 +40,26 @@ def update(frame, U):
     if len(line)>0:
         l = line.pop(0)
         l.remove()
+    if frame%fps == 0:
+        print(f"Frame {frame//fps}.")
     line.append(plt.plot(x,y,"-b")[0])
 
-if False:
+if True:
     fig = plt.figure()
     generate_vid(fig, update, init, t, U[:,0], "Undamped-free-vibration-Case-1.mp4")
 
 #Damping
-c = 200 * 1e-4 * np.ones(6)
+c = 200 * 1e-4 * np.ones(nb)
 C = damping_matrix(c)
 
-if True:
+if False:
     U = Newmark_Method_M(t, u_0, P, K, M, C)
     plot_M(t, U[:,0], "Damped-free-vibration-Case-1", "Time [s]", "Angle [rad]")
+    print(f"Case 1 - Damped => x = {max_lateral_displacement(U[:,0],l)} m")
 
-if True:
+if False:
     fig = plt.figure()
-    generate_vid(fig, update, init, t, U[:,0], "Damped-free-vibration-Case-1.mp4")
+    generate_vid(fig, update, init, t, U[:,0], "Damped-free-vibration-Case-1-t.mp4")
 
 #Case 2
 nb = 3
@@ -65,13 +70,14 @@ M = mass_matrix(m, l)
 C = np.zeros((nb,nb))
 u_0 = np.zeros((nb,2))
 
-t = np.linspace(0, 20, 1000)
+t = np.linspace(0, 20, fps*20)
 P = np.zeros((nb, t.shape[0]))
 u_0[0][0] = 30*math.pi/180
 #Resolve and plot
 if False:
     U = Newmark_Method_M(t, u_0, P, K, M, C)
     plot_M(t, U[:,0], "Undamped-free-vibration-Case-2", "Time [s]", "Angle [rad]")
+    print(f"Case 2 - Undamped => x = {max_lateral_displacement(U[:,0],l)} m")
 
 if False:
     fig = plt.figure()
