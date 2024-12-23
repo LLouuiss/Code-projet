@@ -5,6 +5,7 @@ from functions import *
 nb = 6
 m = 0.2 * np.ones(nb)
 l = 0.75/nb * np.ones(nb)
+print(l)
 K = stiffness_matrix(m, l)
 M = mass_matrix(m, l)
 C = np.zeros((nb,nb))
@@ -44,7 +45,7 @@ def update(frame, U):
         print(f"Frame {frame//fps}.")
     line.append(plt.plot(x,y,"-b")[0])
 
-if True:
+if False:
     fig = plt.figure()
     generate_vid(fig, update, init, t, U[:,0], "Undamped-free-vibration-Case-1.mp4")
 
