@@ -41,30 +41,6 @@ def Newmark_Method_S(t, u_0, p, m, k, c):
     return U
 
 """
-This function is deprecated
-"""
-def Newmark_Method_M_old(t, u_0, P, K, M, C):
-    N = len(K)
-    n = len(t)
-    U = np.zeros((N, 3, n))
-    Q = np.zeros((N, 3, n))
-    w, phi = phi_normalized_M(K, M)
-    phi_inv = np.linalg.inv(phi)
-    C_g = phi.T @ C @ phi
-    P_g = phi_inv @ P
-    q_0 = np.zeros((N,2))
-    for j in range(2):
-        q_0[:,j] = phi_inv @ u_0[:,j] 
-    if isdiag(C_g, 1e-12)==False:
-        print("C_g is not diagonal")
-        print(C_g)
-    for i in range(N):
-        Q[i] = Newmark_Method_S(t, q_0[i], P_g[i], 1, w[i]**2, C_g[i][i])
-    for j in range(3):
-        U[:,j] = phi @ Q[:,j]
-    return U
-
-"""
 Apply the Newmark Method to solve the equation of motion for multiple degree of freedom
 Input:
     t: np.array time
@@ -94,17 +70,20 @@ def Newmark_Method_M(t, u_0, P, K, M, C):
         U[:,1,i + 1] = dU_p + gamma*U[:,2,i + 1]*dt
     return U
 
+"""Normalize the phi matrix by the mass matrix M"""
 def normalize_mass(phi, M):
     phi_new = np.zeros(phi.shape)
     for i in range(phi.shape[1]):
         phi_new[:,i] = phi[:,i] / np.sqrt(phi[:,i].T @ M @ phi[:,i])
     return phi_new
 
+"""Return the frequency and the normalized mode shape with the matrix K and M"""
 def phi_normalized_M(K, M):
     eig_val, eig_vec = eig(K, M)
     phi = normalize_mass(eig_vec, M)
     return np.real(eig_val)**.5, phi
 
+"""Test if the matrix A is diagonal with a tolerance tol"""
 def isdiag(A, tol):
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
@@ -112,6 +91,7 @@ def isdiag(A, tol):
                 return False
     return True
 
+"""Compute the mass matrix M for our problem with the mass array m and the length array l."""
 def mass_matrix(m, l):
     M = np.zeros((len(m),len(m)))
     for i in range(len(m)):
@@ -120,6 +100,7 @@ def mass_matrix(m, l):
                 M[i][j] += m[k]*l[i]*l[j]
     return M
 
+"""Compute the stiffness matrix K for our problem with the mass array m and the length array l."""
 def stiffness_matrix(m, l):
     K = np.zeros((len(m),len(m)))
     for i in range(len(m)):
@@ -127,6 +108,7 @@ def stiffness_matrix(m, l):
             K[i][i] += m[k]*9.81*l[i]
     return K
 
+"""Compute the damping matrix C for our problem with the damping array c."""
 def damping_matrix(c):
     C = np.zeros((len(c), len(c)))
     C[0][0] = c[0] + c[1]
@@ -138,6 +120,7 @@ def damping_matrix(c):
         C[i][i-1] = -c[i]
     return C
 
+"""Compute the maximal lateral displacement of the system with the angle displacement array U in radian and the length array l."""
 def max_lateral_displacement(U,l):
     N = U.shape[0]
     n = U.shape[1]
@@ -146,17 +129,20 @@ def max_lateral_displacement(U,l):
         x[i] = x[i-1] + l[i-1]*np.sin(U[i-1])
     return np.max(np.abs(x))
 
+"""Initialize the plot with the title, xlabel and ylabel"""
 def plot_initialize(title, xlabel, ylabel):
     plt.figure(title)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.grid()
 
+"""End the plot and save it in the file_name"""
 def plot_end(file_name):
     plt.legend()
     plt.savefig(file_name)
     plt.show()
 
+"""Plot the displacement of the system with the time array t and the displacement array U"""
 def plot_M(t, U, title, xlabel, ylabel ):
     plot_initialize(title, xlabel, ylabel)
     for i in range(U.shape[0]):
@@ -164,6 +150,7 @@ def plot_M(t, U, title, xlabel, ylabel ):
     plt.xlim((0,20))
     plot_end(f"Assignement/figure/{title}.pdf")
 
+"""Plot the mode shape of the system with the frequency array w, the mode shape array phi and the length array l"""
 def plot_mode(w, phi,l, title):
     n = len(w)
     plt.figure(title, figsize=(10,10))
@@ -185,7 +172,7 @@ def plot_mode(w, phi,l, title):
     plt.savefig(f"Assignement/figure/{title}.pdf")
     plt.show()
 
-
+"""Generate a video with the function func, the initial function init, the time array t, the displacement array D and save it in the filename"""
 def generate_vid(fig, func, init, t, D, filename):
     print('start_animation')
     ani = FuncAnimation(fig, partial(func, U=D), frames=np.arange(0,t.size), init_func=init, interval=(t[1]-t[0])*1e-3)
